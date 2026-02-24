@@ -1,0 +1,35 @@
+flowchart TD
+    subgraph Data["Training Data"]
+        AUDIO_GT["Audio Files"]
+        MIDI_GT["Ground Truth MIDI"]
+        SYNTH["Synthetic Data Generator<br/>MIDI to audio via FluidSynth"]
+    end
+
+    subgraph Train["Training Pipeline"]
+        LOADER["Data Loader<br/>Paired audio + MIDI"]
+        AUG["Augmentation<br/>pitch shift, noise,<br/>tempo change, EQ"]
+        MODEL_TRAIN["Model Training<br/>PyTorch Lightning"]
+        CKPT["Checkpoint Manager"]
+    end
+
+    subgraph Eval["Evaluation"]
+        MIR_EVAL["mir_eval Metrics"]
+        ONSET_F1["Onset F1"]
+        PITCH_ACC["Pitch Accuracy"]
+        NOTE_F1["Note-level F1"]
+        REPORT["Evaluation Report"]
+    end
+
+    AUDIO_GT --> LOADER
+    MIDI_GT --> LOADER
+    SYNTH --> LOADER
+    LOADER --> AUG
+    AUG --> MODEL_TRAIN
+    MODEL_TRAIN --> CKPT
+    CKPT --> MIR_EVAL
+    MIR_EVAL --> ONSET_F1
+    MIR_EVAL --> PITCH_ACC
+    MIR_EVAL --> NOTE_F1
+    ONSET_F1 --> REPORT
+    PITCH_ACC --> REPORT
+    NOTE_F1 --> REPORT

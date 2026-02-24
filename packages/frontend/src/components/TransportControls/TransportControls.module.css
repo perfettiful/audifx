@@ -1,0 +1,234 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fileInfo {
+  text-align: center;
+}
+
+.fileName {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+/* Progress bar */
+.progressContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.time {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  min-width: 45px;
+}
+
+.time:last-child {
+  text-align: right;
+}
+
+.progressWrapper {
+  flex: 1;
+  position: relative;
+  height: 8px;
+}
+
+.progressSlider {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.progressTrack {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--gradient-accent);
+  border-radius: var(--radius-full);
+  transition: width 100ms linear;
+  position: relative;
+}
+
+.progressFill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(50%, -50%);
+  width: 14px;
+  height: 14px;
+  background: var(--color-accent-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.progressWrapper:hover .progressFill::after {
+  opacity: 1;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.mainControls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.stopButton,
+.playButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.stopButton {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+}
+
+.stopButton:hover {
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+}
+
+.stopButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+.playButton {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  color: var(--color-text-primary);
+  box-shadow: 0 4px 20px rgba(255, 51, 102, 0.4);
+}
+
+.playButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px rgba(255, 51, 102, 0.5);
+}
+
+.playButton:active {
+  transform: scale(0.98);
+}
+
+.playButton svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Volume */
+.volumeControl {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.volumeButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.volumeButton:hover {
+  color: var(--color-text-primary);
+}
+
+.volumeButton svg {
+  width: 18px;
+  height: 18px;
+}
+
+.volumeSlider {
+  width: 80px;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+.volumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--color-accent-secondary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.volumeSlider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.volumeSlider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--color-accent-secondary);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .controls {
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+  
+  .volumeControl {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .volumeSlider {
+    width: 120px;
+  }
+}
+

@@ -1,0 +1,37 @@
+graph TB
+    subgraph Client["Browser Client"]
+        REACT["React App"]
+        WS_CLIENT["WebSocket Client"]
+    end
+
+    subgraph Gateway["Reverse Proxy"]
+        NGINX["nginx / Caddy"]
+    end
+
+    subgraph API_SERVER["API Server"]
+        FASTAPI["FastAPI"]
+        WS_SERVER["WebSocket Handler"]
+    end
+
+    subgraph Workers["GPU Worker Pool"]
+        W1["Worker 1<br/>Demucs + Transcription"]
+        W2["Worker 2"]
+        REDIS["Redis / Celery<br/>Task Queue"]
+    end
+
+    subgraph Storage_Layer["Storage"]
+        S3["S3 / MinIO<br/>Artifacts"]
+        PG["PostgreSQL<br/>Job Metadata"]
+    end
+
+    REACT -->|HTTP + WS| NGINX
+    NGINX --> FASTAPI
+    NGINX --> WS_SERVER
+    WS_CLIENT --> WS_SERVER
+    FASTAPI --> REDIS
+    REDIS --> W1
+    REDIS --> W2
+    W1 --> S3
+    W2 --> S3
+    FASTAPI --> PG
+    FASTAPI --> S3

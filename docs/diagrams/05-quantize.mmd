@@ -1,0 +1,23 @@
+flowchart LR
+    subgraph Inputs
+        RAW_NOTES["Raw Transcribed Notes"]
+        BEAT_GRID["Beat Grid"]
+        TIME_SIG["Time Signature"]
+    end
+
+    subgraph Quantize["Quantization Engine"]
+        SNAP["Snap to Nearest<br/>Subdivision"]
+        STRENGTH["Quantize Strength<br/>0-100%"]
+        SWING["Swing Amount"]
+    end
+
+    subgraph Output
+        QUANT_NOTES["Quantized Notes"]
+    end
+
+    RAW_NOTES --> SNAP
+    BEAT_GRID --> SNAP
+    TIME_SIG --> SNAP
+    SNAP --> STRENGTH
+    STRENGTH --> SWING
+    SWING --> QUANT_NOTES

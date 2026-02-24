@@ -1,0 +1,221 @@
+.container {
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-5);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.clearButton {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+
+.clearButton:hover {
+  color: var(--color-accent-primary);
+  background: rgba(255, 51, 102, 0.1);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--space-3);
+}
+
+.effectCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3);
+  background: var(--color-bg-tertiary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
+  animation: slide-up 0.4s ease forwards;
+  animation-delay: var(--animation-delay);
+  opacity: 0;
+  overflow: hidden;
+}
+
+.effectCard:hover {
+  background: var(--color-bg-elevated);
+  border-color: var(--effect-color);
+  transform: translateY(-2px);
+}
+
+.effectCard.active {
+  background: rgba(var(--effect-color), 0.1);
+  border-color: var(--effect-color);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--effect-color) 30%, transparent);
+}
+
+.effectIcon {
+  font-size: var(--text-2xl);
+  line-height: 1;
+}
+
+.effectName {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-align: center;
+  transition: color var(--transition-fast);
+}
+
+.effectCard:hover .effectName,
+.effectCard.active .effectName {
+  color: var(--color-text-primary);
+}
+
+.effectGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, var(--effect-color), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+}
+
+.effectCard:hover .effectGlow {
+  opacity: 0.1;
+}
+
+.effectCard.active .effectGlow {
+  opacity: 0.15;
+}
+
+/* Parameters Section */
+.parameters {
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  animation: fade-in 0.3s ease forwards;
+}
+
+.parametersTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.parametersDescription {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-5);
+}
+
+.parametersList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.parameter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.parameterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.parameterLabel {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.parameterValue {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+}
+
+.parameterUnit {
+  color: var(--color-text-muted);
+  margin-left: var(--space-1);
+}
+
+/* Custom slider styling */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--effect-color, var(--color-accent-primary));
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--effect-color, var(--color-accent-primary)) 50%, transparent);
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--effect-color, var(--color-accent-primary)) 70%, transparent);
+}
+
+.slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: var(--effect-color, var(--color-accent-primary));
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+

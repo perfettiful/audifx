@@ -1,0 +1,1 @@
+export { MIDIVisualizer } from './MIDIVisualizer';

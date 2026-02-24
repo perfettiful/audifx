@@ -1,0 +1,239 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: rgba(10, 10, 15, 0.8);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+}
+
+.cardTitle {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Key Detection */
+.keyDisplay {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.keyName {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.keyConfidence {
+  font-size: 12px;
+  color: #888;
+}
+
+.correlationBar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.correlationFill {
+  height: 100%;
+  background: linear-gradient(90deg, rgb(99, 102, 241) 0%, rgb(147, 51, 234) 100%);
+  transition: width 0.3s ease;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.statValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.statLabel {
+  font-size: 11px;
+  color: #666;
+  text-transform: uppercase;
+}
+
+/* Chromagram */
+.chromagram {
+  display: flex;
+  gap: 4px;
+  height: 100px;
+  align-items: flex-end;
+}
+
+.chromaBar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.chromaFill {
+  width: 100%;
+  border-radius: 2px 2px 0 0;
+  transition: height 0.3s ease;
+}
+
+.chromaLabel {
+  font-size: 9px;
+  color: #666;
+  margin-top: 4px;
+  font-family: monospace;
+}
+
+/* Circle of Fifths */
+.circleOfFifths {
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+}
+
+.circleSvg {
+  width: 200px;
+  height: 200px;
+}
+
+/* Voice Comparison */
+.voiceList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.voiceRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.voiceHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.voiceColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.voiceLabel {
+  font-weight: 600;
+  color: #ddd;
+  flex: 1;
+}
+
+.voiceNotes {
+  font-size: 11px;
+  color: #666;
+}
+
+.voiceBars {
+  display: flex;
+  gap: 16px;
+}
+
+.voiceBarGroup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.voiceBarLabel {
+  font-size: 9px;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.voiceBar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.voiceBarFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Histogram */
+.histogram {
+  display: flex;
+  gap: 3px;
+  height: 80px;
+  align-items: flex-end;
+}
+
+.histBar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.histFill {
+  width: 100%;
+  border-radius: 2px 2px 0 0;
+  transition: height 0.3s ease;
+}
+
+.histLabel {
+  font-size: 8px;
+  color: #666;
+  margin-top: 4px;
+  font-family: monospace;
+}
+
+.histLegend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 8px;
+  font-size: 10px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .statValue {
+    font-size: 18px;
+  }
+}

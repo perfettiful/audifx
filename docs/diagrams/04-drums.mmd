@@ -1,0 +1,42 @@
+flowchart TD
+    DRUM_STEM["Drums Stem"]
+
+    subgraph Feature["Feature Extraction"]
+        SPEC["Mel Spectrogram"]
+        ONSET_ENV["Onset Strength"]
+        FLUX["Spectral Flux"]
+    end
+
+    subgraph Detection["Event Detection"]
+        PEAK["Peak Picking"]
+        SEGMENT["Micro-Segmentation"]
+    end
+
+    subgraph Classification["Hit Classification"]
+        CNN["CNN Classifier"]
+        RULE["Rule-Based Fallback"]
+    end
+
+    subgraph Mapping["MIDI Mapping"]
+        GM["General MIDI Drum Map"]
+        KICK["C1 36 Kick"]
+        SNARE["D1 38 Snare"]
+        HH["F#1 42 Hi-Hat"]
+        OTHER_D["Toms, Cymbals"]
+    end
+
+    DRUM_STEM --> SPEC
+    DRUM_STEM --> ONSET_ENV
+    DRUM_STEM --> FLUX
+    SPEC --> CNN
+    ONSET_ENV --> PEAK
+    FLUX --> PEAK
+    PEAK --> SEGMENT
+    SEGMENT --> CNN
+    SEGMENT --> RULE
+    CNN --> GM
+    RULE --> GM
+    GM --> KICK
+    GM --> SNARE
+    GM --> HH
+    GM --> OTHER_D

@@ -1,0 +1,37 @@
+graph TB
+    subgraph Frontend["Frontend (React + Vite)"]
+        UI[Web UI]
+        FX[Audio Effects<br/>Tone.js]
+        VIZ[3D Visualizer<br/>Three.js]
+    end
+
+    subgraph Backend["Backend (FastAPI)"]
+        API[REST API]
+        PIPE[Pipeline Orchestrator]
+        WORKER[Job Queue]
+    end
+
+    subgraph Models["AI Models"]
+        DEMUCS[Demucs<br/>Stem Separation]
+        BP[BasicPitch<br/>Transcription]
+        LLM[Local LLM<br/>Label Refinement]
+    end
+
+    subgraph Storage["Artifacts"]
+        UPLOAD[Upload WAV]
+        STEMS[Separated Stems]
+        MIDI[MIDI Files]
+        TL[timeline.json]
+    end
+
+    UI -->|upload audio| API
+    API --> WORKER
+    WORKER --> PIPE
+    PIPE --> DEMUCS
+    DEMUCS --> STEMS
+    STEMS --> BP
+    BP --> MIDI
+    MIDI --> LLM
+    LLM --> TL
+    TL -->|poll & fetch| VIZ
+    UI --> FX

@@ -1,0 +1,2 @@
+export { GenreDetail } from './GenreDetail';
+

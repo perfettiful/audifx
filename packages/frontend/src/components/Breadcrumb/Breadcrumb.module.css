@@ -1,0 +1,92 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  color: #888;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.current {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.separator {
+  color: #444;
+  font-size: 16px;
+  margin: 0 2px;
+  user-select: none;
+}
+
+.icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .link,
+  .text,
+  .current {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+
+  .icon {
+    font-size: 14px;
+  }
+
+  /* Hide intermediate breadcrumb text on mobile, show only icons */
+  .link span:not(.icon),
+  .text span:not(.icon) {
+    display: none;
+  }
+
+  .current span:not(.icon) {
+    display: inline;
+  }
+}

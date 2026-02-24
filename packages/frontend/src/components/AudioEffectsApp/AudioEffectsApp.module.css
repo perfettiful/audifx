@@ -1,0 +1,286 @@
+@import '../../styles/variables.css';
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+}
+
+.header {
+  padding: var(--space-6) var(--space-8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 10, 15, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.backButton {
+  padding: var(--space-3) var(--space-5);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.backButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-2px);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.logoIcon {
+  font-size: var(--text-3xl);
+}
+
+.logoText {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  margin: 0;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-8);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Upload Section */
+.uploadSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  align-items: center;
+  max-width: 600px;
+  margin: var(--space-12) auto;
+  width: 100%;
+}
+
+.selectedPreset {
+  text-align: center;
+  margin-bottom: var(--space-4);
+}
+
+.presetBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: color-mix(in srgb, var(--preset-color) 20%, transparent);
+  border: 2px solid var(--preset-color);
+  border-radius: var(--radius-full);
+  color: var(--color-text-primary);
+}
+
+.presetBadgeIcon {
+  font-size: var(--text-xl);
+}
+
+.presetBadgeName {
+  font-weight: 600;
+}
+
+.presetBadgeClear {
+  background: none;
+  border: none;
+  color: var(--color-text-primary);
+  font-size: var(--text-2xl);
+  cursor: pointer;
+  padding: 0;
+  margin-left: var(--space-2);
+}
+
+.presetHint {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  margin-top: var(--space-2);
+}
+
+.orDivider {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  margin: var(--space-4) 0;
+}
+
+.orDivider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.orDivider span {
+  position: relative;
+  padding: 0 var(--space-4);
+  background: var(--color-bg-primary);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.exploreButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-6);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.exploreButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+}
+
+.exploreIcon {
+  font-size: var(--text-xl);
+}
+
+/* Presets Section */
+.presetsSection {
+  width: 100%;
+}
+
+.backButtonInline {
+  padding: var(--space-3) var(--space-5);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  margin-bottom: var(--space-6);
+}
+
+.backButtonInline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-2px);
+}
+
+/* Editor Section */
+.editorSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: 100%;
+}
+
+.activePresetBanner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: color-mix(in srgb, var(--preset-color) 15%, rgba(10, 10, 15, 0.8));
+  border: 1px solid var(--preset-color);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+}
+
+.activePresetIcon {
+  font-size: var(--text-2xl);
+}
+
+.activePresetName {
+  flex: 1;
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+
+.learnMoreButton {
+  padding: var(--space-2) var(--space-4);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.learnMoreButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.visualizerWrapper,
+.transportWrapper,
+.effectsWrapper {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+
+.newFileButton,
+.presetsButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.newFileButton:hover,
+.presetsButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.newFileIcon {
+  font-size: var(--text-xl);
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .main {
+    padding: var(--space-5);
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,24 @@
+graph TD
+    STEM["Stem Audio<br/>(e.g. bass.wav)"]
+
+    subgraph Models["Parallel Transcription Models"]
+        BP["BasicPitch<br/>Best for: polyphonic vocals,<br/>clean melodies"]
+        MT3_M["MT3<br/>Best for: multi-instrument,<br/>complex textures"]
+        ONF["Onsets and Frames<br/>Best for: piano, guitar,<br/>note boundaries"]
+    end
+
+    subgraph Merge["Ensemble Merger"]
+        ALIGN["Temporal Alignment<br/>Snap to common grid"]
+        VOTE["Weighted Voting<br/>per-model confidence"]
+        RESOLVE["Conflict Resolution<br/>Pitch consensus"]
+    end
+
+    STEM --> BP
+    STEM --> MT3_M
+    STEM --> ONF
+    BP -->|notes + confidence| ALIGN
+    MT3_M -->|notes + confidence| ALIGN
+    ONF -->|notes + confidence| ALIGN
+    ALIGN --> VOTE
+    VOTE --> RESOLVE
+    RESOLVE --> FINAL["Final Note List"]

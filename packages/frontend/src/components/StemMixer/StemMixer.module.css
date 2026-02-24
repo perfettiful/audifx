@@ -1,0 +1,535 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+  color: #fff;
+}
+
+.header {
+  padding: 20px 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tagline {
+  margin: 8px 0 0 0;
+  font-size: 14px;
+  color: #888;
+}
+
+.main {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Upload Section */
+.uploadSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.dropzone {
+  width: 100%;
+  max-width: 600px;
+  padding: 60px 40px;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dropzone:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.fileInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dropzoneIcon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.dropzoneText {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px 0;
+}
+
+.dropzoneHint {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+}
+
+/* Loading & Error States */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 40px;
+  text-align: center;
+  color: #aaa;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: rgb(99, 102, 241);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px;
+  text-align: center;
+}
+
+.errorMessage {
+  color: #f87171;
+  font-size: 16px;
+}
+
+.retryButton {
+  padding: 10px 24px;
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 8px;
+  color: rgb(147, 130, 255);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 8px;
+  color: #f87171;
+}
+
+.error button {
+  margin-left: auto;
+  padding: 6px 16px;
+  background: rgba(248, 113, 113, 0.2);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 6px;
+  color: #f87171;
+  cursor: pointer;
+}
+
+/* Processing */
+.processing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.processingStatus {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.progressBar {
+  width: 100%;
+  max-width: 300px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, rgb(99, 102, 241) 0%, rgb(147, 51, 234) 100%);
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  color: rgb(147, 130, 255);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Mixer Section */
+.mixerSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Transport Controls */
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.playButton {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgb(99, 102, 241) 0%, rgb(147, 51, 234) 100%);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.playButton:hover {
+  transform: scale(1.05);
+}
+
+.timeline {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.seekBar {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.seekBar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgb(99, 102, 241);
+  cursor: pointer;
+}
+
+.timeDisplay {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #888;
+  font-variant-numeric: tabular-nums;
+}
+
+.resetButton {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #aaa;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.resetButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Stem Tracks */
+.tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+
+.track:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.trackMuted {
+  opacity: 0.5;
+}
+
+.trackSolo {
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+}
+
+.trackHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 150px;
+}
+
+.trackColor {
+  width: 8px;
+  height: 40px;
+  border-radius: 4px;
+}
+
+.trackIcon {
+  font-size: 24px;
+}
+
+.trackName {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.trackControls {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.controlGroup label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  width: 30px;
+}
+
+.volumeSlider,
+.panSlider {
+  width: 120px;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.volumeSlider::-webkit-slider-thumb,
+.panSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgb(99, 102, 241);
+  cursor: pointer;
+}
+
+.controlValue {
+  font-size: 12px;
+  color: #aaa;
+  font-variant-numeric: tabular-nums;
+  min-width: 40px;
+}
+
+.trackButtons {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.soloButton,
+.muteButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #888;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.soloButton:hover {
+  background: rgba(255, 193, 7, 0.2);
+  border-color: rgba(255, 193, 7, 0.5);
+  color: #ffc107;
+}
+
+.soloButton.active {
+  background: rgba(255, 193, 7, 0.3);
+  border-color: #ffc107;
+  color: #ffc107;
+}
+
+.muteButton:hover {
+  background: rgba(248, 113, 113, 0.2);
+  border-color: rgba(248, 113, 113, 0.5);
+  color: #f87171;
+}
+
+.muteButton.active {
+  background: rgba(248, 113, 113, 0.3);
+  border-color: #f87171;
+  color: #f87171;
+}
+
+/* Export Section */
+.exportSection {
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.exportTitle {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ddd;
+}
+
+.exportButtons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.exportButton {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, rgb(99, 102, 241) 0%, rgb(147, 51, 234) 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exportButton:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+}
+
+.exportButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Job ID Display */
+.jobIdDisplay {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.jobIdLabel {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.jobIdValue {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  color: rgb(147, 130, 255);
+  background: rgba(99, 102, 241, 0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.copyButton,
+.linkButton {
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: #aaa;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.copyButton:hover,
+.linkButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header {
+    padding: 16px 20px;
+  }
+
+  .main {
+    padding: 20px;
+  }
+
+  .track {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .trackControls {
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .trackButtons {
+    margin-left: 0;
+  }
+
+  .transport {
+    flex-wrap: wrap;
+  }
+
+  .timeline {
+    width: 100%;
+    order: 3;
+  }
+}

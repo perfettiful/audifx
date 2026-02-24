@@ -1,0 +1,77 @@
+flowchart LR
+    INPUT["Input<br/>MP4 / MP3 / WAV"]
+
+    subgraph INGEST["1. Ingestion"]
+        direction TB
+        DEMUX["Demux / Extract Audio<br/>(ffmpeg)"]
+        VALIDATE["Validate Format"]
+        NORMALIZE["Normalize<br/>EBU R128"]
+    end
+
+    subgraph SEP["2. Source Separation"]
+        direction TB
+        DEMUCS["Demucs v4<br/>(htdemucs_ft)"]
+        STEMS_OUT["Stems:<br/>Vocals, Bass,<br/>Drums, Other"]
+    end
+
+    subgraph ANALYSIS["3. Audio Analysis"]
+        direction TB
+        BPM["Tempo / BPM"]
+        KEY["Key Detection"]
+        BEATS["Beat Grid"]
+        ONSET["Onset Detection"]
+    end
+
+    subgraph TRANSCRIPTION["4. Multi-Model Transcription"]
+        direction TB
+        BP2["BasicPitch"]
+        MT3["MT3"]
+        ONSETTRANS["Onsets and Frames"]
+        ENSEMBLE["Ensemble Merger"]
+    end
+
+    subgraph POST["5. Post-Processing"]
+        direction TB
+        QUANT["Beat-Aware Quantize"]
+        MERGE["Note Merging"]
+        CLEAN["Voice Cleanup"]
+        CHORD["Chord Detection"]
+        STRUCT["Structure Segmentation"]
+    end
+
+    subgraph OUTPUT["6. Output"]
+        direction TB
+        TIMELINE["timeline.json"]
+        MIDIFILES["MIDI Files"]
+        MUSICXML["MusicXML"]
+        ANALYSIS_OUT["Analysis JSON"]
+    end
+
+    INPUT --> DEMUX
+    DEMUX --> VALIDATE
+    VALIDATE --> NORMALIZE
+    NORMALIZE --> DEMUCS
+    DEMUCS --> STEMS_OUT
+    STEMS_OUT --> BPM
+    STEMS_OUT --> KEY
+    STEMS_OUT --> BEATS
+    STEMS_OUT --> ONSET
+    STEMS_OUT --> BP2
+    STEMS_OUT --> MT3
+    STEMS_OUT --> ONSETTRANS
+    BP2 --> ENSEMBLE
+    MT3 --> ENSEMBLE
+    ONSETTRANS --> ENSEMBLE
+    ONSET --> ENSEMBLE
+    BPM --> QUANT
+    BEATS --> QUANT
+    ENSEMBLE --> QUANT
+    QUANT --> MERGE
+    MERGE --> CLEAN
+    CLEAN --> CHORD
+    KEY --> CHORD
+    CHORD --> STRUCT
+    STRUCT --> TIMELINE
+    STRUCT --> MIDIFILES
+    STRUCT --> MUSICXML
+    STRUCT --> ANALYSIS_OUT
