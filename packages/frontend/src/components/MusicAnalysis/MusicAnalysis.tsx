@@ -20,7 +20,7 @@ interface MusicAnalysisProps {
 
 type ViewMode = 'dashboard' | 'tonnetz' | 'pca';
 
-export function MusicAnalysis({ onBackToHome, initialJobId }: MusicAnalysisProps) {
+export function MusicAnalysis({ onBackToHome: _onBackToHome, initialJobId }: MusicAnalysisProps) {
   const [currentJobId, setCurrentJobId] = useState<string | null>(initialJobId || null);
   const [isUploading, setIsUploading] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);

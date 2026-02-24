@@ -1,9 +1,10 @@
-import { BrowserRouter, Routes, Route, useNavigate, useParams, Link } from 'react-router-dom';
+import { HashRouter, Routes, Route, useNavigate, useParams, Link } from 'react-router-dom';
 import { AudioProvider } from './context/AudioContext';
 import { AudioEffectsApp } from './components/AudioEffectsApp';
 import { MIDIViewer } from './components/MIDIViewer';
 import { MusicAnalysis } from './components/MusicAnalysis';
 import { StemMixer } from './components/StemMixer';
+import { BackendRequired } from './components/BackendRequired';
 import styles from './App.module.css';
 
 function HomePage() {
@@ -18,7 +19,7 @@ function HomePage() {
             Audi<span className={styles.logoAccent}>FX</span>
           </h1>
         </div>
-        <p className={styles.tagline}>Professional audio tools powered by AI</p>
+        <p className={styles.tagline}>Audio effects and AI-powered music tools</p>
       </header>
 
       <main className={styles.main}>
@@ -29,7 +30,6 @@ function HomePage() {
           </p>
 
           <div className={styles.toolGrid}>
-            {/* Audio Effects Tool */}
             <div
               className={styles.toolCard}
               onClick={() => navigate('/effects')}
@@ -43,18 +43,17 @@ function HomePage() {
                 Transform audio with genre presets like Slowed + Reverb, Nightcore, Lo-fi, 8D Audio, and more
               </p>
               <div className={styles.toolFeatures}>
-                <span className={styles.toolFeature}>✨ 7+ Effect Presets</span>
-                <span className={styles.toolFeature}>🎚️ Real-time Processing</span>
-                <span className={styles.toolFeature}>💾 Export Results</span>
+                <span className={styles.toolFeature}>7+ Effect Presets</span>
+                <span className={styles.toolFeature}>Real-time Processing</span>
+                <span className={styles.toolFeature}>Export Results</span>
               </div>
               <div className={styles.toolAction}>
-                Start Mixing →
+                Start Mixing
               </div>
             </div>
 
-            {/* MIDI Visualizer Tool */}
             <div
-              className={styles.toolCard}
+              className={`${styles.toolCard} ${styles.requiresBackend}`}
               onClick={() => navigate('/visualizer')}
               role="button"
               tabIndex={0}
@@ -63,21 +62,21 @@ function HomePage() {
               <div className={styles.toolIcon}>🎹</div>
               <h3 className={styles.toolTitle}>MIDI Visualizer</h3>
               <p className={styles.toolDescription}>
-                AI-powered MIDI transcription with stunning 3D visualization of your music's structure
+                AI stem separation and MIDI transcription with 3D visualization
               </p>
               <div className={styles.toolFeatures}>
-                <span className={styles.toolFeature}>🤖 AI Stem Separation</span>
-                <span className={styles.toolFeature}>🎼 MIDI Transcription</span>
-                <span className={styles.toolFeature}>🌟 3D Visualization</span>
+                <span className={styles.toolFeature}>AI Stem Separation</span>
+                <span className={styles.toolFeature}>MIDI Transcription</span>
+                <span className={styles.toolFeature}>3D Visualization</span>
               </div>
               <div className={styles.toolAction}>
-                Visualize Music →
+                Visualize Music
               </div>
+              <span className={styles.backendBadge}>Requires Backend</span>
             </div>
 
-            {/* Music Analysis Tool */}
             <div
-              className={styles.toolCard}
+              className={`${styles.toolCard} ${styles.requiresBackend}`}
               onClick={() => navigate('/analysis')}
               role="button"
               tabIndex={0}
@@ -86,21 +85,21 @@ function HomePage() {
               <div className={styles.toolIcon}>📊</div>
               <h3 className={styles.toolTitle}>Music Analysis</h3>
               <p className={styles.toolDescription}>
-                Deep statistical analysis with PCA dimensionality reduction and 3D Tonnetz torus visualization
+                Key detection, chord analysis, PCA, and Tonnetz visualization
               </p>
               <div className={styles.toolFeatures}>
-                <span className={styles.toolFeature}>🔬 Key Detection</span>
-                <span className={styles.toolFeature}>📈 PCA Analysis</span>
-                <span className={styles.toolFeature}>🍩 Tonnetz Torus</span>
+                <span className={styles.toolFeature}>Key Detection</span>
+                <span className={styles.toolFeature}>PCA Analysis</span>
+                <span className={styles.toolFeature}>Tonnetz Torus</span>
               </div>
               <div className={styles.toolAction}>
-                Analyze Music →
+                Analyze Music
               </div>
+              <span className={styles.backendBadge}>Requires Backend</span>
             </div>
 
-            {/* Stem Mixer Tool */}
             <div
-              className={styles.toolCard}
+              className={`${styles.toolCard} ${styles.requiresBackend}`}
               onClick={() => navigate('/remix')}
               role="button"
               tabIndex={0}
@@ -109,16 +108,17 @@ function HomePage() {
               <div className={styles.toolIcon}>🎚️</div>
               <h3 className={styles.toolTitle}>Stem Mixer</h3>
               <p className={styles.toolDescription}>
-                AI separates vocals, drums, bass, and more. Remix them with individual controls and export.
+                AI separates vocals, drums, bass, and more. Remix with individual controls.
               </p>
               <div className={styles.toolFeatures}>
-                <span className={styles.toolFeature}>🎤 Vocal Isolation</span>
-                <span className={styles.toolFeature}>🎛️ Per-Stem Mix</span>
-                <span className={styles.toolFeature}>💾 Export Remix</span>
+                <span className={styles.toolFeature}>Vocal Isolation</span>
+                <span className={styles.toolFeature}>Per-Stem Mix</span>
+                <span className={styles.toolFeature}>Export Remix</span>
               </div>
               <div className={styles.toolAction}>
-                Start Remixing →
+                Start Remixing
               </div>
+              <span className={styles.backendBadge}>Requires Backend</span>
             </div>
           </div>
         </section>
@@ -127,7 +127,7 @@ function HomePage() {
       <footer className={styles.footer}>
         <p>
           Built with Web Audio API, Tone.js & Three.js
-          <span className={styles.separator}>•</span>
+          <span className={styles.separator}>·</span>
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className={styles.link}>
             View Source
           </a>
@@ -137,7 +137,6 @@ function HomePage() {
   );
 }
 
-// Wrapper components that pass navigation and URL params to the tools
 function AudioEffectsPage() {
   const navigate = useNavigate();
   return <AudioEffectsApp onBackToHome={() => navigate('/')} />;
@@ -146,22 +145,33 @@ function AudioEffectsPage() {
 function MIDIViewerPage() {
   const navigate = useNavigate();
   const { jobId } = useParams<{ jobId?: string }>();
-  return <MIDIViewer onBackToHome={() => navigate('/')} initialJobId={jobId} />;
+  return (
+    <BackendRequired featureName="MIDI Visualizer">
+      <MIDIViewer onBackToHome={() => navigate('/')} initialJobId={jobId} />
+    </BackendRequired>
+  );
 }
 
 function MusicAnalysisPage() {
   const navigate = useNavigate();
   const { jobId } = useParams<{ jobId?: string }>();
-  return <MusicAnalysis onBackToHome={() => navigate('/')} initialJobId={jobId} />;
+  return (
+    <BackendRequired featureName="Music Analysis">
+      <MusicAnalysis onBackToHome={() => navigate('/')} initialJobId={jobId} />
+    </BackendRequired>
+  );
 }
 
 function StemMixerPage() {
   const navigate = useNavigate();
   const { jobId } = useParams<{ jobId?: string }>();
-  return <StemMixer onBackToHome={() => navigate('/')} initialJobId={jobId} />;
+  return (
+    <BackendRequired featureName="Stem Mixer">
+      <StemMixer onBackToHome={() => navigate('/')} initialJobId={jobId} />
+    </BackendRequired>
+  );
 }
 
-// 404 Page
 function NotFoundPage() {
   return (
     <div className={styles.app}>
@@ -177,10 +187,10 @@ function NotFoundPage() {
         <section className={styles.homeSection}>
           <h2 className={styles.homeTitle}>Page Not Found</h2>
           <p className={styles.homeSubtitle}>
-            The page you're looking for doesn't exist.
+            This page doesn't exist.
           </p>
           <Link to="/" className={styles.toolAction} style={{ display: 'inline-block', marginTop: '20px', textDecoration: 'none' }}>
-            ← Back to Home
+            Back to Home
           </Link>
         </section>
       </main>
@@ -191,7 +201,7 @@ function NotFoundPage() {
 function App() {
   return (
     <AudioProvider>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/effects" element={<AudioEffectsPage />} />
@@ -203,7 +213,7 @@ function App() {
           <Route path="/remix/:jobId" element={<StemMixerPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </AudioProvider>
   );
 }

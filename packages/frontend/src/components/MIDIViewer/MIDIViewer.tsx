@@ -42,7 +42,7 @@ interface MIDIViewerProps {
   initialJobId?: string;
 }
 
-export function MIDIViewer({ onBackToHome, initialJobId }: MIDIViewerProps = {}) {
+export function MIDIViewer({ onBackToHome: _onBackToHome, initialJobId }: MIDIViewerProps = {}) {
   const [timeline, setTimeline] = useState<Timeline | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);

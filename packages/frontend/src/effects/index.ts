@@ -7,7 +7,8 @@ import { eightDAudioEffect } from './eightD';
 import { choppedScrewedEffect } from './choppedScrewed';
 import { vaporwaveEffect } from './vaporwave';
 
-export const effectRegistry: Record<EffectType, EffectModule> = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const effectRegistry: Record<EffectType, EffectModule<any>> = {
   'slowed-reverb': slowedReverbEffect,
   'nightcore': nightcoreEffect,
   'underwater': underwaterEffect,
@@ -17,9 +18,11 @@ export const effectRegistry: Record<EffectType, EffectModule> = {
   'vaporwave': vaporwaveEffect,
 };
 
-export const effectList: EffectModule[] = Object.values(effectRegistry);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const effectList: EffectModule<any>[] = Object.values(effectRegistry);
 
-export function getEffect(id: EffectType): EffectModule | undefined {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getEffect(id: EffectType): EffectModule<any> | undefined {
   return effectRegistry[id];
 }
 

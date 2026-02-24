@@ -20,7 +20,7 @@ interface AudioEffectsAppProps {
 
 type View = 'upload' | 'presets' | 'editor';
 
-export function AudioEffectsApp({ onBackToHome }: AudioEffectsAppProps) {
+export function AudioEffectsApp({ onBackToHome: _onBackToHome }: AudioEffectsAppProps) {
   const { state, setEffect, updateEffectParam, loadBuffer, startAudioContext } = useAudio();
   const [view, setView] = useState<View>('upload');
   const [selectedPreset, setSelectedPreset] = useState<GenrePreset | null>(null);

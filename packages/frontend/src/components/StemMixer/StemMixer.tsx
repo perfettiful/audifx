@@ -42,7 +42,7 @@ const STEM_ICONS: Record<string, string> = {
   no_vocals: '🎵'
 };
 
-export function StemMixer({ onBackToHome, initialJobId }: StemMixerProps) {
+export function StemMixer({ onBackToHome: _onBackToHome, initialJobId }: StemMixerProps) {
   const [currentJobId, setCurrentJobId] = useState<string | null>(initialJobId || null);
   const [stems, setStems] = useState<Stem[]>([]);
   const [isUploading, setIsUploading] = useState(false);
