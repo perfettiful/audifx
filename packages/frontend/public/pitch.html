@@ -152,7 +152,7 @@
   <a href="#s7">Upgrade Plan</a>
   <a href="#s8">Models</a>
   <a href="#s9">Deploy</a>
-  <a href="#s10">Next Steps</a>
+  <a href="#s10">Roadmap</a>
   <a href="#s11">Links</a>
 </nav>
 <div class="main">
@@ -400,18 +400,44 @@ graph TD
   </div>
 </div>
 
-<!-- ===== NEXT STEPS ===== -->
-<div id="s10" class="sec-head" style="color:var(--mint)"><span class="dot" style="background:var(--mint)"></span> Next Steps</div>
-<div class="card" style="--i:26">
-  <table class="tbl">
-    <thead><tr><th>Version</th><th>Effort</th><th>What</th></tr></thead>
-    <tbody>
-      <tr><td><strong>v1.1</strong></td><td><span class="tag tag--mint">~3 days</span></td><td>Add madmom beat detection. Quantize notes to beat grid.</td></tr>
-      <tr><td><strong>v1.2</strong></td><td><span class="tag tag--sky">~5 days</span></td><td>Omnizart drums. MT3 for "other" stem. Note merge.</td></tr>
-      <tr><td><strong>v1.3</strong></td><td><span class="tag tag--amber">~3 days</span></td><td>Dockerize. RunPod deploy. WebSocket progress.</td></tr>
-      <tr><td style="color:var(--text-dim)"><strong>v1.4</strong></td><td><span class="tag tag--violet">~1 week</span></td><td style="color:var(--text-dim)">MP4 video input. SQLite for jobs. Rate limiting. (if needed)</td></tr>
-    </tbody>
-  </table>
+<!-- ===== ROADMAP ===== -->
+<div id="s10" class="sec-head" style="color:var(--mint)"><span class="dot" style="background:var(--mint)"></span> Roadmap</div>
+
+<div style="position:relative;padding-left:28px;margin-top:8px;">
+  <!-- timeline line -->
+  <div style="position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--border-bright);border-radius:1px;"></div>
+
+  <!-- NOW -->
+  <div class="card" style="--i:26;margin-bottom:20px;position:relative;">
+    <div style="position:absolute;left:-24px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--mint);border:2px solid var(--bg);"></div>
+    <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--mint);margin-bottom:6px;">Now</div>
+    <div class="card-title">Beat detection and quantization</div>
+    <div class="card-desc">Integrate madmom for BPM and beat tracking. Build a subdivision grid from detected beats. Snap all transcribed note onsets to the nearest grid point. This is the single biggest quality improvement to the MIDI output.</div>
+  </div>
+
+  <!-- NEXT -->
+  <div class="card" style="--i:27;margin-bottom:20px;position:relative;">
+    <div style="position:absolute;left:-24px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--sky);border:2px solid var(--bg);"></div>
+    <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--sky);margin-bottom:6px;">Next</div>
+    <div class="card-title">Better transcription and drum detection</div>
+    <div class="card-desc">Add MT3 (Google) as a second transcription model for the "other" stem, where BasicPitch struggles with polyphonic keys and guitar. Merge outputs by deduplicating notes within 50ms and same pitch. Replace the rule-based drum classifier with Omnizart's pre-trained drum model for proper kick/snare/hihat/tom/cymbal classification.</div>
+  </div>
+
+  <!-- THEN -->
+  <div class="card" style="--i:28;margin-bottom:20px;position:relative;">
+    <div style="position:absolute;left:-24px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--amber);border:2px solid var(--bg);"></div>
+    <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--amber);margin-bottom:6px;">Then</div>
+    <div class="card-title">Containerize and deploy</div>
+    <div class="card-desc">Dockerize the backend so it's reproducible. Deploy to a cloud GPU provider (RunPod or similar) at about $0.02 per song processed. Replace HTTP polling with WebSocket for real-time progress streaming.</div>
+  </div>
+
+  <!-- LATER -->
+  <div class="card card--recessed" style="--i:29;position:relative;">
+    <div style="position:absolute;left:-24px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--text-dim);border:2px solid var(--bg);"></div>
+    <div style="font-family:var(--font-mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);margin-bottom:6px;">Later</div>
+    <div class="card-title" style="color:var(--text-dim)">If there's demand</div>
+    <div class="card-desc">MP4 video input (ffmpeg audio extract). SQLite for job persistence. Rate limiting. More analysis features. These depend on what users actually ask for.</div>
+  </div>
 </div>
 
 <!-- ===== LINKS ===== -->
