@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AudiFX — Engineering Pitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'Space Grotesk', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    --bg: #0c0e13;
+    --surface: #14171e;
+    --surface2: #1a1e27;
+    --surface-elevated: #1e2230;
+    --border: rgba(255,255,255,0.06);
+    --border-bright: rgba(255,255,255,0.12);
+    --text: #e8e6e3;
+    --text-dim: #7a7d85;
+    --coral: #f97066; --coral-dim: rgba(249,112,102,0.1);
+    --sky: #38bdf8; --sky-dim: rgba(56,189,248,0.1);
+    --mint: #34d399; --mint-dim: rgba(52,211,153,0.1);
+    --amber: #fbbf24; --amber-dim: rgba(251,191,36,0.1);
+    --violet: #a78bfa; --violet-dim: rgba(167,139,250,0.1);
+    --rose: #fb7185; --rose-dim: rgba(251,113,133,0.1);
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f5f3; --surface: #ffffff; --surface2: #f0eee9; --surface-elevated: #fff;
+      --border: rgba(0,0,0,0.06); --border-bright: rgba(0,0,0,0.12);
+      --text: #1a1817; --text-dim: #7a7670;
+      --coral: #dc2626; --coral-dim: rgba(220,38,38,0.06);
+      --sky: #0284c7; --sky-dim: rgba(2,132,199,0.06);
+      --mint: #059669; --mint-dim: rgba(5,150,105,0.06);
+      --amber: #b45309; --amber-dim: rgba(180,83,9,0.06);
+      --violet: #7c3aed; --violet-dim: rgba(124,58,237,0.06);
+      --rose: #e11d48; --rose-dim: rgba(225,29,72,0.06);
+    }
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 15% 10%, var(--coral-dim) 0%, transparent 45%),
+      radial-gradient(ellipse at 85% 85%, var(--sky-dim) 0%, transparent 40%);
+    color: var(--text); font-family: var(--font-body); min-height: 100vh;
+  }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeScale { from { opacity:0; transform:scale(0.93); } to { opacity:1; transform:scale(1); } }
+  @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:0.01ms!important; transition-duration:0.01ms!important; } .mermaid-wrap .mermaid { transition:none; } }
+
+  .wrap { max-width:1300px; margin:0 auto; display:grid; grid-template-columns:160px 1fr; gap:0 40px; padding:40px; }
+  .main { min-width:0; }
+  .toc { position:sticky; top:24px; align-self:start; padding:14px 0; grid-row:1/-1; max-height:calc(100dvh - 48px); overflow-y:auto; }
+  .toc::-webkit-scrollbar { width:3px; } .toc::-webkit-scrollbar-thumb { background:var(--surface-elevated); border-radius:2px; }
+  .toc-title { font-family:var(--font-mono); font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--text-dim); padding:0 0 10px; margin-bottom:8px; border-bottom:1px solid var(--border); }
+  .toc a { display:block; font-size:11px; color:var(--text-dim); text-decoration:none; padding:4px 8px; border-radius:5px; border-left:2px solid transparent; transition:all 0.15s; line-height:1.4; margin-bottom:1px; }
+  .toc a:hover { color:var(--text); background:var(--surface2); }
+  .toc a.active { color:var(--text); border-left-color:var(--coral); }
+
+  h1 { font-family:var(--font-display); font-size:46px; font-weight:400; letter-spacing:-0.5px; line-height:1.1; margin-bottom:8px; }
+  h1 span { color:var(--coral); }
+  .subtitle { color:var(--text-dim); font-family:var(--font-mono); font-size:14px; margin-bottom:48px; line-height:1.6; }
+  .sec-head { font-family:var(--font-mono); font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:1.5px; display:flex; align-items:center; gap:8px; margin-top:44px; margin-bottom:18px; scroll-margin-top:20px; }
+  .sec-head .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 26px; animation:fadeUp 0.4s ease-out both; animation-delay:calc(var(--i,0)*0.05s); transition:transform 0.2s, box-shadow 0.2s; }
+  .card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.12); }
+  .card--hero { background:var(--surface-elevated); box-shadow:0 4px 20px rgba(0,0,0,0.08); padding:28px 32px; }
+  .card--recessed { background:var(--surface2); box-shadow:inset 0 1px 3px rgba(0,0,0,0.06); }
+  .card-title { font-weight:600; font-size:17px; margin-bottom:8px; }
+  .card-desc { font-size:15px; color:var(--text-dim); line-height:1.7; }
+  .card-desc strong { color:var(--text); }
+  .card-desc code { font-family:var(--font-mono); font-size:12px; padding:1px 5px; border-radius:3px; }
+
+  .kpi-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-bottom:24px; }
+  .kpi { background:var(--surface-elevated); border:1px solid var(--border); border-radius:10px; padding:18px; animation:fadeScale 0.35s ease-out both; animation-delay:calc(var(--i,0)*0.06s); }
+  .kpi-value { font-size:34px; font-weight:700; letter-spacing:-1px; font-variant-numeric:tabular-nums; }
+  .kpi-label { font-family:var(--font-mono); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-dim); margin-top:4px; }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+
+  .nlist { list-style:none; font-size:14px; line-height:1.9; }
+  .nlist li { padding-left:16px; position:relative; }
+  .nlist li::before { content:''; width:6px; height:6px; border-radius:50%; position:absolute; left:0; top:10px; }
+  .nlist code { font-family:var(--font-mono); font-size:12px; padding:1px 5px; border-radius:3px; }
+  .nlist--coral li::before { background:var(--coral); } .nlist--coral code { background:var(--coral-dim); color:var(--coral); }
+  .nlist--sky li::before { background:var(--sky); } .nlist--sky code { background:var(--sky-dim); color:var(--sky); }
+  .nlist--mint li::before { background:var(--mint); } .nlist--mint code { background:var(--mint-dim); color:var(--mint); }
+  .nlist--amber li::before { background:var(--amber); } .nlist--amber code { background:var(--amber-dim); color:var(--amber); }
+  .nlist--violet li::before { background:var(--violet); } .nlist--violet code { background:var(--violet-dim); color:var(--violet); }
+
+  .tag { font-family:var(--font-mono); font-size:11px; font-weight:500; padding:3px 9px; border-radius:4px; display:inline-block; margin:2px 2px; }
+  .tag--coral { background:var(--coral-dim); color:var(--coral); }
+  .tag--sky { background:var(--sky-dim); color:var(--sky); }
+  .tag--mint { background:var(--mint-dim); color:var(--mint); }
+  .tag--amber { background:var(--amber-dim); color:var(--amber); }
+  .tag--violet { background:var(--violet-dim); color:var(--violet); }
+
+  .callout { background:var(--surface2); border:1px solid var(--border); border-radius:0 10px 10px 0; padding:18px 22px; font-size:14px; line-height:1.7; color:var(--text-dim); }
+  .callout strong { color:var(--text); }
+
+  a { color:var(--sky); text-decoration:none; } a:hover { text-decoration:underline; }
+
+  /* Mermaid */
+  .mermaid-wrap { position:relative; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:32px 24px; overflow:auto; margin-bottom:16px; animation:fadeUp 0.4s ease-out both; animation-delay:calc(var(--i,0)*0.05s); }
+  .mermaid-wrap .mermaid { display:flex; justify-content:center; transition:transform 0.2s ease; transform-origin:top center; }
+  .zoom-controls { position:absolute; top:8px; right:8px; display:flex; gap:2px; z-index:10; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:2px; }
+  .zoom-controls button { width:28px; height:28px; border:none; background:transparent; color:var(--text-dim); font-family:var(--font-mono); font-size:14px; cursor:pointer; border-radius:4px; display:flex; align-items:center; justify-content:center; transition:background 0.15s, color 0.15s; }
+  .zoom-controls button:hover { background:var(--border); color:var(--text); }
+  .mermaid-wrap::-webkit-scrollbar { width:6px; height:6px; }
+  .mermaid-wrap::-webkit-scrollbar-track { background:transparent; }
+  .mermaid-wrap::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+  .mermaid-wrap.is-zoomed { cursor:grab; } .mermaid-wrap.is-panning { cursor:grabbing; user-select:none; }
+  .mermaid .nodeLabel { font-family:var(--font-body)!important; font-size:14px!important; }
+  .mermaid .edgeLabel { font-family:var(--font-mono)!important; font-size:12px!important; }
+
+  .diagram-label { font-family:var(--font-mono); font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin-bottom:10px; }
+
+  /* Table */
+  .tbl { width:100%; border-collapse:collapse; font-size:14px; }
+  .tbl th { text-align:left; padding:12px 16px; font-family:var(--font-mono); font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); border-bottom:2px solid var(--border-bright); }
+  .tbl td { padding:12px 16px; border-bottom:1px solid var(--border); vertical-align:top; }
+  .tbl tbody tr:nth-child(even) { background:var(--surface2); }
+  .tbl a { color:var(--sky); }
+
+  @media (max-width:1000px) {
+    .wrap { grid-template-columns:1fr; padding:20px; }
+    .toc { position:sticky; top:0; z-index:200; max-height:none; display:flex; gap:4px; overflow-x:auto; background:var(--bg); border-bottom:1px solid var(--border); padding:10px 0; margin:0 -20px; padding-left:20px; padding-right:20px; grid-row:auto; }
+    .toc::-webkit-scrollbar { display:none; } .toc-title { display:none; }
+    .toc a { white-space:nowrap; flex-shrink:0; border-left:none; border-bottom:2px solid transparent; border-radius:4px 4px 0 0; padding:6px 10px; font-size:10px; }
+    .toc a.active { border-left:none; border-bottom-color:var(--coral); background:var(--surface); }
+    .main { padding-top:20px; } .sec-head { scroll-margin-top:52px; }
+    .grid-2,.grid-3 { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" id="toc">
+  <div class="toc-title">Pitch</div>
+  <a href="#s1">Overview</a>
+  <a href="#s2">Numbers</a>
+  <a href="#s3">Architecture</a>
+  <a href="#s4">Pipeline</a>
+  <a href="#s5">Features</a>
+  <a href="#s6">Gaps</a>
+  <a href="#s7">Upgrade Plan</a>
+  <a href="#s8">Models</a>
+  <a href="#s9">Deploy</a>
+  <a href="#s10">Next Steps</a>
+  <a href="#s11">Links</a>
+</nav>
+<div class="main">
+
+<h1>Audi<span>FX</span></h1>
+<p class="subtitle">Audio effects + AI stem separation + MIDI transcription + 3D visualization.<br>Looking for a backend engineer to own the audio-to-MIDI pipeline.</p>
+
+<!-- ===== OVERVIEW ===== -->
+<div id="s1" class="sec-head" style="color:var(--coral)"><span class="dot" style="background:var(--coral)"></span> Overview</div>
+<div class="card card--hero" style="--i:1">
+  <div class="card-desc" style="font-size:16px;color:var(--text);line-height:1.75;">
+    Two modes. <strong>Audio Effects</strong> runs in the browser: upload a song, apply effects (Slowed + Reverb, Nightcore, Lo-fi, 8D Audio, Vaporwave, Underwater, Chopped & Screwed), tweak parameters, export. Uses Tone.js and the Web Audio API. No backend needed. Deployed to GitHub Pages.
+    <br><br>
+    <strong>MIDI Visualizer</strong> is the backend piece. Upload audio, the server separates it into stems with Demucs (Meta), transcribes each to MIDI with BasicPitch (Spotify), cleans up the notes, and outputs a timeline.json. The frontend renders it as an interactive 3D scene in Three.js with playback sync, voice filtering, and camera controls. Also includes a stem mixer and music analysis (key, chords, PCA, Tonnetz).
+  </div>
+</div>
+
+<!-- ===== NUMBERS ===== -->
+<div id="s2" class="sec-head" style="color:var(--sky)"><span class="dot" style="background:var(--sky)"></span> Numbers</div>
+<div class="kpi-row">
+  <div class="kpi" style="--i:2"><div class="kpi-value" style="color:var(--coral)">7</div><div class="kpi-label">Audio Effects</div></div>
+  <div class="kpi" style="--i:3"><div class="kpi-value" style="color:var(--sky)">4</div><div class="kpi-label">AI Stems</div></div>
+  <div class="kpi" style="--i:4"><div class="kpi-value" style="color:var(--mint)">8</div><div class="kpi-label">Genre Presets</div></div>
+  <div class="kpi" style="--i:5"><div class="kpi-value" style="color:var(--amber)">~90s</div><div class="kpi-label">Per Song (GPU)</div></div>
+  <div class="kpi" style="--i:6"><div class="kpi-value" style="color:var(--violet)">14</div><div class="kpi-label">API Endpoints</div></div>
+</div>
+
+<!-- ===== ARCHITECTURE ===== -->
+<div id="s3" class="sec-head" style="color:var(--mint)"><span class="dot" style="background:var(--mint)"></span> Architecture</div>
+<p class="diagram-label">System Overview</p>
+<div class="mermaid-wrap" style="--i:7">
+  <div class="zoom-controls">
+    <button onclick="zoomDiagram(this, 1.2)" title="Zoom in">+</button>
+    <button onclick="zoomDiagram(this, 0.8)" title="Zoom out">&minus;</button>
+    <button onclick="resetZoom(this)" title="Reset zoom">&#8634;</button>
+  </div>
+  <pre class="mermaid">
+graph LR
+  subgraph Browser["Browser (no backend needed)"]
+    UPLOAD["Upload Audio"]
+    FX["Audio Effects<br/>Tone.js"]
+    EXPORT["Export"]
+    UPLOAD --> FX --> EXPORT
+  end
+
+  subgraph Backend["Python Backend (FastAPI)"]
+    API["REST API<br/>14 endpoints"]
+    WORKER["Job Queue"]
+    API --> WORKER
+  end
+
+  subgraph Models["AI Models"]
+    DEMUCS["Demucs<br/>Stem Separation"]
+    BP["BasicPitch<br/>Transcription"]
+    LLM["LLM<br/>Labels (opt)"]
+    WORKER --> DEMUCS --> BP --> LLM
+  end
+
+  subgraph Frontend["Frontend (React + Three.js)"]
+    VIZ["3D MIDI Visualizer"]
+    MIXER["Stem Mixer"]
+    ANALYSIS["Music Analysis"]
+  end
+
+  UPLOAD2["Upload Audio"] --> API
+  LLM --> |timeline.json| VIZ
+  DEMUCS --> |stems| MIXER
+  BP --> |notes| ANALYSIS
+  </pre>
+</div>
+
+<p class="diagram-label" style="margin-top:24px">Backend Processing Pipeline</p>
+<div class="mermaid-wrap" style="--i:8">
+  <div class="zoom-controls">
+    <button onclick="zoomDiagram(this, 1.2)" title="Zoom in">+</button>
+    <button onclick="zoomDiagram(this, 0.8)" title="Zoom out">&minus;</button>
+    <button onclick="resetZoom(this)" title="Reset zoom">&#8634;</button>
+  </div>
+  <pre class="mermaid">
+graph TD
+  A["Audio Upload<br/>(MP3, WAV, FLAC)"] --> B["Preprocess<br/>ffmpeg normalize<br/>44.1kHz stereo"]
+  B --> C["Demucs<br/>Stem Separation"]
+  C --> D["Vocals"]
+  C --> E["Bass"]
+  C --> F["Drums"]
+  C --> G["Other"]
+  D --> H["BasicPitch"]
+  E --> H
+  G --> H
+  F --> I["Onset Detection<br/>+ Spectral Classify"]
+  H --> J["Post-Processing<br/>Remove micro-notes<br/>Merge, clamp, polyphony"]
+  I --> J
+  J --> K["LLM Refinement<br/>(optional)"]
+  K --> L["timeline.json<br/>+ MIDI files"]
+  </pre>
+</div>
+
+<!-- ===== PIPELINE DETAIL ===== -->
+<div id="s4" class="sec-head" style="color:var(--amber)"><span class="dot" style="background:var(--amber)"></span> Pipeline Detail</div>
+<div class="card" style="--i:9">
+  <table class="tbl">
+    <thead><tr><th>Stage</th><th>Tool</th><th>What Happens</th><th>Time (GPU)</th></tr></thead>
+    <tbody>
+      <tr><td>Preprocess</td><td><code style="background:var(--coral-dim);color:var(--coral)">ffmpeg</code></td><td>Normalize to 44.1kHz stereo, EBU R128 loudness, convert to WAV</td><td>~2s</td></tr>
+      <tr><td>Stem Separation</td><td><code style="background:var(--sky-dim);color:var(--sky)">Demucs htdemucs</code></td><td>Split into vocals, bass, drums, other</td><td>30-40s</td></tr>
+      <tr><td>Transcription</td><td><code style="background:var(--mint-dim);color:var(--mint)">BasicPitch</code></td><td>Melodic stems to MIDI notes with onset, duration, pitch, velocity</td><td>20-30s</td></tr>
+      <tr><td>Drums</td><td><code style="background:var(--amber-dim);color:var(--amber)">librosa onset_detect</code></td><td>Onset detection + spectral centroid for kick/snare/hihat</td><td>~2s</td></tr>
+      <tr><td>Cleanup</td><td>Custom Python</td><td>Remove notes &lt;80ms, merge adjacent, clamp pitch ranges, limit polyphony</td><td>~2s</td></tr>
+      <tr><td>LLM (opt)</td><td><code style="background:var(--violet-dim);color:var(--violet)">llama.cpp</code></td><td>Rename "other" to "Piano"/"Guitar", detect verse/chorus/bridge</td><td>5-10s</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== FEATURES ===== -->
+<div id="s5" class="sec-head" style="color:var(--sky)"><span class="dot" style="background:var(--sky)"></span> What's Built</div>
+<div class="grid-2">
+  <div class="card" style="--i:10;border-left:3px solid var(--sky)">
+    <div class="card-title">AI Stem Separation</div>
+    <div class="card-desc"><strong>Demucs htdemucs</strong> (Meta) splits audio into 4 stems: vocals, bass, drums, other. GPU accelerated via CUDA. Each stem saved as WAV and served via the API. Users can download or stream individual stems.</div>
+  </div>
+  <div class="card" style="--i:11;border-left:3px solid var(--mint)">
+    <div class="card-title">MIDI Transcription</div>
+    <div class="card-desc"><strong>BasicPitch</strong> (Spotify) outputs MIDI note events with onset, duration, pitch, velocity. Drums handled separately via onset detection. Post-processing removes noise, merges duplicates, clamps pitch ranges, limits polyphony. MIDI files downloadable per stem.</div>
+  </div>
+  <div class="card" style="--i:12;border-left:3px solid var(--violet)">
+    <div class="card-title">3D Visualization</div>
+    <div class="card-desc">Three.js renders all notes as 3D boxes. X = time, Y = pitch, Z = voice. Color per instrument. Notes light up during playback. Orbit and follow camera modes. Per-voice filtering. Section markers (verse, chorus). Instanced mesh rendering for performance.</div>
+  </div>
+  <div class="card" style="--i:13;border-left:3px solid var(--coral)">
+    <div class="card-title">Audio Effects (browser only)</div>
+    <div class="card-desc">7 effects with Tone.js: <strong>Slowed+Reverb</strong> (convolver), <strong>Nightcore</strong> (EQ boost), <strong>Lo-fi</strong> (band-pass + distortion + bit crush + vinyl noise), <strong>8D</strong> (LFO panner + reverb), <strong>Underwater</strong> (lowpass), <strong>Chopped &amp; Screwed</strong> (scheduled stutters), <strong>Vaporwave</strong> (chorus + reverb). 8 genre presets with parameter values.</div>
+  </div>
+  <div class="card" style="--i:14;border-left:3px solid var(--amber)">
+    <div class="card-title">Stem Mixer</div>
+    <div class="card-desc">Per-stem volume, pan, mute, solo controls. All stems play in sync. Remix endpoint mixes server-side with numpy, normalizes, returns WAV or FLAC.</div>
+  </div>
+  <div class="card" style="--i:15;border-left:3px solid var(--rose)">
+    <div class="card-title">Music Analysis</div>
+    <div class="card-desc">Key detection (Krumhansl-Schmuckler), chord analysis (time-windowed triad/seventh detection), PCA voice comparison (feature extraction + projection), Tonnetz torus (neo-Riemannian pitch class mapping).</div>
+  </div>
+</div>
+<div class="card card--hero" style="--i:16;margin-top:14px">
+  <div class="card-title">REST API</div>
+  <div class="card-desc">14 endpoints via FastAPI (Swagger at <code style="background:var(--sky-dim);color:var(--sky)">/docs</code>): upload, job status, timeline, audio, stems list, stem download, MIDI list, MIDI download, remix, analysis, harmony, PCA, Tonnetz, export. Jobs run in a background thread with progress.</div>
+</div>
+
+<!-- ===== GAPS ===== -->
+<div id="s6" class="sec-head" style="color:var(--coral)"><span class="dot" style="background:var(--coral)"></span> Gaps</div>
+<div class="card card--recessed" style="--i:17;border-left:3px solid var(--coral)">
+  <ul class="nlist nlist--coral">
+    <li><strong>Transcription accuracy</strong> on complex passages. BasicPitch alone misses notes in dense polyphony (keys, guitar chords).</li>
+    <li><strong>Drum classification</strong> is rule-based. Spectral centroid can only do kick/snare/hihat. Misclassifies toms, cymbals, etc.</li>
+    <li><strong>No beat grid.</strong> Notes are raw float timestamps. No quantization to musical positions.</li>
+    <li><strong>No tempo detection.</strong> BPM isn't extracted. Can't do beat-aware post-processing.</li>
+    <li><strong>HTTP polling</strong> for job progress. Should be WebSocket.</li>
+  </ul>
+</div>
+
+<!-- ===== UPGRADE ===== -->
+<div id="s7" class="sec-head" style="color:var(--mint)"><span class="dot" style="background:var(--mint)"></span> Upgrade Plan</div>
+
+<p class="diagram-label">Proposed Pipeline (changes highlighted)</p>
+<div class="mermaid-wrap" style="--i:18">
+  <div class="zoom-controls">
+    <button onclick="zoomDiagram(this, 1.2)" title="Zoom in">+</button>
+    <button onclick="zoomDiagram(this, 0.8)" title="Zoom out">&minus;</button>
+    <button onclick="resetZoom(this)" title="Reset zoom">&#8634;</button>
+  </div>
+  <pre class="mermaid">
+graph TD
+  A["Audio Upload"] --> B["Preprocess (existing)"]
+  B --> C["Demucs (existing)"]
+  C --> D["Vocals / Bass"]
+  C --> E["Other (keys, guitar)"]
+  C --> F["Drums"]
+
+  D --> G["BasicPitch (existing)"]
+  E --> H["MT3 (NEW)"]
+  E --> G
+  G --> I["Merge + Deduplicate (NEW)"]
+  H --> I
+
+  F --> J["Omnizart Drums (NEW)"]
+
+  B --> K["madmom (NEW)<br/>Beat + BPM"]
+
+  I --> L["Quantize to Beat Grid (NEW)"]
+  J --> L
+  K --> L
+
+  L --> M["Post-Processing (existing)"]
+  M --> N["timeline.json + MIDI"]
+
+  classDef new fill:#34d39920,stroke:#34d399,stroke-width:2px
+  class H,I,J,K,L new
+  </pre>
+</div>
+
+<div class="grid-2" style="margin-top:8px">
+  <div class="card" style="--i:19;border-color:var(--mint-dim)">
+    <div class="card-title" style="color:var(--mint)">madmom: beat detection</div>
+    <div class="card-desc"><code style="background:var(--mint-dim);color:var(--mint)">pip install madmom</code>. Detect beats, BPM, and downbeats. Build a subdivision grid. Snap all note onsets to nearest grid point. Runs on CPU. About a day of work.</div>
+  </div>
+  <div class="card" style="--i:20;border-color:var(--sky-dim)">
+    <div class="card-title" style="color:var(--sky)">MT3: better "other" stem</div>
+    <div class="card-desc">Google's multi-instrument transcription model. Use for the "other" stem only, where BasicPitch struggles with complex polyphony. Merge output by deduplicating notes within 50ms + same pitch. About 2 days.</div>
+  </div>
+  <div class="card" style="--i:21;border-color:var(--amber-dim)">
+    <div class="card-title" style="color:var(--amber)">Omnizart: real drum detection</div>
+    <div class="card-desc"><code style="background:var(--amber-dim);color:var(--amber)">pip install omnizart</code>. Pre-trained drum model that classifies kick, snare, hihat, toms, cymbals. Replaces the spectral centroid approach. About a day.</div>
+  </div>
+  <div class="card" style="--i:22;border-color:var(--violet-dim)">
+    <div class="card-title" style="color:var(--violet)">Docker + cloud deploy</div>
+    <div class="card-desc">Dockerize the backend. Deploy to RunPod at ~$0.40/hr (~$0.02 per song). Add WebSocket for progress streaming. About 2 days.</div>
+  </div>
+</div>
+
+<!-- ===== MODELS ===== -->
+<div id="s8" class="sec-head" style="color:var(--violet)"><span class="dot" style="background:var(--violet)"></span> Models</div>
+<div class="card" style="--i:23">
+  <table class="tbl">
+    <thead><tr><th>Tool</th><th>By</th><th>What</th><th>Install</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://github.com/facebookresearch/demucs">Demucs</a></td><td>Meta</td><td>Stem separation</td><td><code style="background:var(--coral-dim);color:var(--coral)">pip install demucs</code></td></tr>
+      <tr><td><a href="https://github.com/spotify/basic-pitch">BasicPitch</a></td><td>Spotify</td><td>Audio to MIDI</td><td><code style="background:var(--sky-dim);color:var(--sky)">pip install basic-pitch</code></td></tr>
+      <tr><td><a href="https://github.com/magenta/mt3">MT3</a></td><td>Google</td><td>Multi-instrument transcription</td><td>Flax/JAX (<a href="https://arxiv.org/abs/2111.03017">paper</a>)</td></tr>
+      <tr><td><a href="https://github.com/CPJKU/madmom">madmom</a></td><td>JKU Austria</td><td>Beat / tempo detection</td><td><code style="background:var(--mint-dim);color:var(--mint)">pip install madmom</code></td></tr>
+      <tr><td><a href="https://github.com/Music-and-Culture-Technology-Lab/omnizart">Omnizart</a></td><td>Academia Sinica</td><td>Drum transcription</td><td><code style="background:var(--amber-dim);color:var(--amber)">pip install omnizart</code></td></tr>
+      <tr><td><a href="https://github.com/librosa/librosa">librosa</a></td><td>Open source</td><td>Audio analysis</td><td><code style="background:var(--violet-dim);color:var(--violet)">pip install librosa</code></td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:14px;font-size:13px;color:var(--text-dim)">All open source MIR tools. Papers: <a href="https://arxiv.org/abs/2211.08553">Demucs</a>, <a href="https://arxiv.org/abs/2206.11327">BasicPitch</a>, <a href="https://arxiv.org/abs/2111.03017">MT3</a>, <a href="https://arxiv.org/abs/1605.07008">madmom</a>, <a href="https://arxiv.org/abs/2106.00497">Omnizart</a>. Try BasicPitch in your browser: <a href="https://basicpitch.spotify.com">basicpitch.spotify.com</a></div>
+</div>
+
+<!-- ===== DEPLOY ===== -->
+<div id="s9" class="sec-head" style="color:var(--amber)"><span class="dot" style="background:var(--amber)"></span> Deployment</div>
+<div class="grid-2">
+  <div class="card" style="--i:24">
+    <div class="card-title">Frontend</div>
+    <div class="card-desc">GitHub Pages via GitHub Actions. Deploys on push to main. Effects work with no backend. Backend features show a fallback screen when the server isn't running.</div>
+  </div>
+  <div class="card" style="--i:25">
+    <div class="card-title">Backend</div>
+    <div class="card-desc">Docker container on a cloud GPU. RunPod at ~$0.40/hr. A 3 minute song takes ~90 seconds, so roughly $0.02 per song. Also runs locally on any RTX 3060+ or M1/M2 Mac.</div>
+  </div>
+</div>
+
+<!-- ===== NEXT STEPS ===== -->
+<div id="s10" class="sec-head" style="color:var(--mint)"><span class="dot" style="background:var(--mint)"></span> Next Steps</div>
+<div class="card" style="--i:26">
+  <table class="tbl">
+    <thead><tr><th>Version</th><th>Effort</th><th>What</th></tr></thead>
+    <tbody>
+      <tr><td><strong>v1.1</strong></td><td><span class="tag tag--mint">~3 days</span></td><td>Add madmom beat detection. Quantize notes to beat grid.</td></tr>
+      <tr><td><strong>v1.2</strong></td><td><span class="tag tag--sky">~5 days</span></td><td>Omnizart drums. MT3 for "other" stem. Note merge.</td></tr>
+      <tr><td><strong>v1.3</strong></td><td><span class="tag tag--amber">~3 days</span></td><td>Dockerize. RunPod deploy. WebSocket progress.</td></tr>
+      <tr><td style="color:var(--text-dim)"><strong>v1.4</strong></td><td><span class="tag tag--violet">~1 week</span></td><td style="color:var(--text-dim)">MP4 video input. SQLite for jobs. Rate limiting. (if needed)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== LINKS ===== -->
+<div id="s11" class="sec-head" style="color:var(--sky)"><span class="dot" style="background:var(--sky)"></span> Links</div>
+<div class="grid-2">
+  <div class="card card--recessed" style="--i:27">
+    <div class="card-title">Code</div>
+    <ul class="nlist nlist--sky">
+      <li><a href="https://github.com/perfettiful/audifx">GitHub repo</a></li>
+      <li><a href="https://perfettiful.github.io/audifx/">Live demo (frontend only)</a></li>
+    </ul>
+  </div>
+  <div class="card card--recessed" style="--i:28">
+    <div class="card-title">Docs</div>
+    <ul class="nlist nlist--violet">
+      <li><a href="https://github.com/perfettiful/audifx/blob/main/docs/ARCHITECTURE.md">Architecture + upgrade plan</a></li>
+      <li><a href="https://github.com/perfettiful/audifx/blob/main/docs/SPECIFICATION.md">Effect specification</a></li>
+      <li><a href="https://github.com/perfettiful/audifx/blob/main/docs/MIDI_VISUALIZER.md">MIDI visualizer guide</a></li>
+    </ul>
+  </div>
+</div>
+
+</div></div>
+
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  look: 'handDrawn',
+  themeVariables: {
+    primaryColor: isDark ? '#1e2230' : '#f0f4ff',
+    primaryBorderColor: isDark ? '#38bdf8' : '#0284c7',
+    primaryTextColor: isDark ? '#e8e6e3' : '#1a1817',
+    secondaryColor: isDark ? '#1a2e27' : '#ecfdf5',
+    secondaryBorderColor: isDark ? '#34d399' : '#059669',
+    secondaryTextColor: isDark ? '#e8e6e3' : '#1a1817',
+    tertiaryColor: isDark ? '#2e2618' : '#fffbeb',
+    tertiaryBorderColor: isDark ? '#fbbf24' : '#b45309',
+    tertiaryTextColor: isDark ? '#e8e6e3' : '#1a1817',
+    lineColor: isDark ? '#7a7d85' : '#7a7670',
+    fontSize: '14px',
+    fontFamily: "'Space Grotesk', system-ui, sans-serif",
+  }
+});
+</script>
+<script>
+function updateZoomState(w){var t=w.querySelector('.mermaid');var z=parseFloat(t.dataset.zoom||'1');w.classList.toggle('is-zoomed',z>1);}
+function zoomDiagram(b,f){var w=b.closest('.mermaid-wrap');var t=w.querySelector('.mermaid');var c=parseFloat(t.dataset.zoom||'1');var n=Math.min(Math.max(c*f,0.3),5);t.dataset.zoom=n;t.style.transform='scale('+n+')';updateZoomState(w);}
+function resetZoom(b){var w=b.closest('.mermaid-wrap');var t=w.querySelector('.mermaid');t.dataset.zoom='1';t.style.transform='scale(1)';updateZoomState(w);}
+document.querySelectorAll('.mermaid-wrap').forEach(function(w){
+  w.addEventListener('wheel',function(e){if(!e.ctrlKey&&!e.metaKey)return;e.preventDefault();var t=w.querySelector('.mermaid');var c=parseFloat(t.dataset.zoom||'1');var f=e.deltaY<0?1.1:0.9;var n=Math.min(Math.max(c*f,0.3),5);t.dataset.zoom=n;t.style.transform='scale('+n+')';updateZoomState(w);},{passive:false});
+  var sx,sy,sl,st;
+  w.addEventListener('mousedown',function(e){if(e.target.closest('.zoom-controls'))return;var t=w.querySelector('.mermaid');if(parseFloat(t.dataset.zoom||'1')<=1)return;w.classList.add('is-panning');sx=e.clientX;sy=e.clientY;sl=w.scrollLeft;st=w.scrollTop;});
+  window.addEventListener('mousemove',function(e){if(!w.classList.contains('is-panning'))return;w.scrollLeft=sl-(e.clientX-sx);w.scrollTop=st-(e.clientY-sy);});
+  window.addEventListener('mouseup',function(){w.classList.remove('is-panning');});
+});
+(function(){
+  var toc=document.getElementById('toc'),links=toc.querySelectorAll('a'),secs=[];
+  links.forEach(function(l){var id=l.getAttribute('href').slice(1);var el=document.getElementById(id);if(el)secs.push({el:el,link:l});});
+  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){links.forEach(function(l){l.classList.remove('active');});var m=secs.find(function(s){return s.el===e.target;});if(m){m.link.classList.add('active');if(window.innerWidth<=1000)m.link.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}}});},{rootMargin:'-10% 0px -80% 0px'});
+  secs.forEach(function(s){obs.observe(s.el);});
+  links.forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();var id=l.getAttribute('href').slice(1);var el=document.getElementById(id);if(el){el.scrollIntoView({behavior:'smooth',block:'start'});history.replaceState(null,'','#'+id);}});});
+})();
+</script>
+</body>
+</html>

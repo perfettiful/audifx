@@ -83,6 +83,9 @@ artifacts/
 *.sublime-workspace
 *.sublime-project
 
+# Cursor rules (local to each developer)
+.cursor/rules/
+
 # ===================
 # OS
 # ===================
